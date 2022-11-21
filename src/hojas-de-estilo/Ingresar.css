@@ -71,12 +71,31 @@
     background-position: 10px;
   }
   
-  .bloque-ingresar button {
-    width: 120px;
+  .boton {
     height: 40px;
     color: white;
-    background-color: #E33F20;
     border-radius: 20px;
     border: 0px;
     user-select: none;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 0 20px;
+    margin: auto;
+    font-family: 'Actor', sans-serif;
+    font-weight: bold;
   }
+  .boton.bg-rojo {
+    background-color: #E33F20;
+  }
+  .boton.bg-naranja {
+    background-color: #FCA923;
+    color: black;
+  }
+
+  .boton.t-s {
+    width: 120px;
+  }
+  .boton.t-l {
+    width: 200px;
+  }
+  

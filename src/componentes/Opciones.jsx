@@ -1,7 +1,10 @@
 import bugerQueenLogo from '../imagenes/burger-LogoBlanco.png'
 import '../hojas-de-estilo/Opciones.css'
+import { useNavigate } from "react-router";
+import { menuAlmuerzo } from "../Rutas/rutas";
 
 function Opciones() {
+  const navigate = useNavigate()
 
   return (
     <div className='ingresar-contenedor'>
@@ -14,7 +17,7 @@ function Opciones() {
           />
         </figure>
         <div className='bloque-opciones-contenedor'>
-          <section className='bloque-opciones'>
+          <section className='bloque-opciones' onClick={() => navigate(menuAlmuerzo)}>
             <h3>nuevo <br/>pedido</h3>
           </section>
           <section className='bloque-opciones'>
