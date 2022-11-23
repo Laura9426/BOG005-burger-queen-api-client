@@ -47,8 +47,7 @@ h3 {
 .producto {
   width: 120px;
   height: 100px;
-  background-color: black;
-  opacity: 45%;
+  background-color: rgba(0, 0, 0, 0.45);
   border: 1px solid #FCA923;
   border-radius: 10px;
   margin: 0px 10px 10px 10px;
@@ -58,12 +57,14 @@ h3 {
   text-align: center;
   justify-content: center;
 }
+
 .botones-productos {
   width: 100%;
   height: auto;
   text-align: center;
   position: relative;
 }
+
 .botones-productos button {
   margin: 10px;
 }
@@ -71,23 +72,31 @@ h3 {
 .pedidoEscogido-contenedor {
   width: 40%;
   background-color: #D5D4D5;
-  display: flex;
-  flex-direction: column;
   text-align: center;
-  padding: 15px;
-  overflow-y: auto;
+  padding: 15px 0 15px 15px;
+  position: relative;
+}
+
+.pedidoEscogido-contenedor button {
+  position: absolute;
+  left: 50%;
+  margin-left: -100px;
+  bottom: 12px;
 }
 
 .imagenLogo-contenedor {
   width: 100%;
 }
+
 .imagenLogo-contenedor img {
-  width: 130px;
+  width: 100px;
 }
+
 .titulo-pedido-contenedor {
   width: 100%;
   margin-bottom: 5px;
 }
+
 .titulo-pedido {
   color: black;
   font-size: 25px;
@@ -114,19 +123,24 @@ h3 {
 
 .productos-escogidos-contenedor {
   width: 100%;
+  height: 220px;
   margin: 15px 0px;
+  padding-right: 15px;
   text-align: left;
+  overflow-y: auto;
 }
 
-table{
+table {
   width: 100%;
   text-align: left;
 }
-table tr span{
+
+table tr span {
   border-bottom: 2px dotted white;
   display: block;
   padding-bottom: 8px;
 }
+
 table tr td {
   padding: 3px;
   color: black;
@@ -136,16 +150,46 @@ table tr td {
   text-align: right;
   font-size: 20px;
 }
+
 .precio-tabla {
   width: 70px;
   text-align: right;
 }
 
-  .precioTotal-tabla {
-    text-align: right;
-    font-size: 20px;
+.total-pedido {
+  position: absolute;
+  width: 180px;
+  left: 50%;
+  margin-left: -90px;
+  bottom: 60px;
 }
 
-.precioTotal-tabla b {
-  padding-right: 28px;
+.precio-total {
+  text-align: center;
+  font-size: 20px;
+  color: black;
+}
+
+.mensaje {
+  display: none;
+  position: absolute;
+  width: 70%;
+  margin: 0 15%;
+  background: rgba(255, 255, 255, 0.90);
+  left: 0;
+  top: 50%;
+  padding: 20px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  box-shadow: 0 0 5px rgb(0 0 0 / 50%);
+}
+
+.mensaje.error {
+  border: 2px solid red;
+  color: red;
+}
+
+.mensaje.exitoso {
+  border: 2px solid green;
+  color: green;
 }

@@ -3,7 +3,7 @@ import '../hojas-de-estilo/Ingresar.css'
 import bugerQueenLogo from '../imagenes/burger-LogoBlanco.png'
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { opciones } from "../Rutas/rutas";
+import { opciones, menuAlmuerzo, menuDesayuno, cocina } from "../Rutas/rutas";
 
 
 const url = 'http://localhost:8080/login'
@@ -14,7 +14,6 @@ function Ingresar() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [token, setToken] = useState('')
 
   const manejoCorreo = e => {
     setEmail(e.target.value)
@@ -24,30 +23,39 @@ function Ingresar() {
     setPassword(e.target.value)
   }
 
-  const iniciarSesion = async () => {
-    await axios.post(url, {
+  const iniciarSesion = () => {
+
+    axios.post(url, {
       email: email,
       password: password,
       headers: {
         'content-type': 'application/json',
-        "Access-Control-Request-Method": "POST",
-        // authorization: 'Bearer' + this.state.
       }
+    }).then(respuesta => {
+      const role = respuesta.data.user.role;
+      switch (role) {
+        case 'admin':
+          navigate(menuAlmuerzo);
+          break;
+        case 'mesero':
+          navigate(opciones);
+          break;
+        case 'cocinero':
+          navigate(cocina);
+          break;
+        default:
+          console.log('Usuario no existe');
+      }
+      localStorage.setItem('token', respuesta.data.accessToken)
+      localStorage.setItem('userId', respuesta.data.user.id)
+    }).catch(error => {
+      console.log(error);
     })
-      .then(respuesta => {
-        navigate(opciones)
-        localStorage.setItem('token', respuesta.data.accessToken )
-        localStorage.setItem('userId', respuesta.data.user.id )
-        // setToken(respuesta.data.accessToken)
-        console.log(respuesta.data)
-      }).catch(error => {
-        console.log(error);
-      })
   };
 
   const manejadorSubmit = (e) => {
     e.preventDefault();
-  }
+  };
 
   return (
     <div className='ingresar-contenedor'>

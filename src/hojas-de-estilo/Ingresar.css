@@ -91,7 +91,9 @@
     background-color: #FCA923;
     color: black;
   }
-
+  .boton.t-xs {
+    width: 130px;
+  }
   .boton.t-s {
     width: 120px;
   }
