@@ -3,21 +3,18 @@ import axios from "axios";
 import { SlClose } from 'react-icons/sl'
 import '../hojas-de-estilo/ModalEditarProductoAdmin.css'
 
-const url = 'http://localhost:8080/products';
 
-function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal, actualizarLista, setActualizarLista }) {
+function ModalEditarUsuario({ isOpen, closeModal, dataModal, setDataModal, actualizarLista, setActualizarLista }) {
 
+  const url = 'http://localhost:8080/users'
   const [mensajeExitoso, setMensajeExitoso] = useState('');
-  // const [manejoDataa, setManejodataa] = useState({
-  //   name: '', 
-  //   price: ''
-  // });
 
   const detenerClick = (e) => {
     e.stopPropagation();
   };
 
-  const editarProducto = (e) => {
+
+  const editarUsuario = (e) => {
     e.preventDefault();
     axios({
       method: 'PUT',
@@ -28,7 +25,7 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal,
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     }).then((respuesta) => {
-      setMensajeExitoso(`Producto ${respuesta.data.name} fue editado exitosamente`)
+      setMensajeExitoso(`Usuario ${respuesta.data.email} fue editado exitosamente`)
       document.getElementById('mensajeEditar-exitoso').style.display = "block";
       setTimeout(() => {
         document.getElementById('mensajeEditar-exitoso').style.display = "none";
@@ -53,18 +50,17 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal,
       <div className='agregarProductos' onClick={detenerClick}>
         <div id="mensajeEditar-exitoso" className="mensajeEditar exitoso">{mensajeExitoso}</div>
         <SlClose className="iconoCerrar" onClick={closeModal} />
-        <h3>EDITAR PRODUCTO</h3>
-        <form onSubmit={editarProducto}>
-          <input type="text" placeholder="NOMBRE" value={dataModal.name} name="name" onChange={manejoData} required />
-          <input type="number" placeholder="PRECIO" value={dataModal.price} name="price" onChange={manejoData} required />
+        <h3>EDITAR USUARIO</h3>
+        <form onSubmit={editarUsuario}>
+          <input type="text" placeholder="CORREO" value={dataModal.email} name="email" onChange={manejoData} required />
+          <input type="number" placeholder="CONTRASEÑA" value={dataModal.password} name="password" onChange={manejoData} required />
 
-          <select name="type" onChange={manejoData} required>
-            <option value={dataModal.type}>{dataModal.type}</option>
-            <option value="Desayuno">Desayuno</option>
-            <option value="Almuerzo">Almuerzo</option>
+          <select name="role" onChange={manejoData} required>
+            <option value={dataModal.role}>{dataModal.role}</option>
+            <option value="admin">admin</option>
+            <option value="mesero">mesero</option>
+            <option value="cocinero">cocinero</option>
           </select>
-
-          <input type="datetime-local" placeholder="FECHA" value={dataModal.dateEntry} name="dateEntry" onChange={manejoData} required />
 
           <button className="boton bg-naranja t-xs">
             GUARDAR
@@ -77,4 +73,4 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal,
   )
 };
 
-export default ModalEditarProductoAdmin;
+export default ModalEditarUsuario;

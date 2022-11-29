@@ -6,6 +6,7 @@ function PedidosEnCocina() {
   const urlOrdenes = 'http://localhost:8080/orders';
 
   const [pedidos, setPedidos] = useState([]);
+  const [pedidoListo, setPedidoListo] = useState({});
 
   useEffect(() => {
     axios.get(urlOrdenes, {
@@ -21,6 +22,34 @@ function PedidosEnCocina() {
     })
   }, []);
 
+  const pedidosPendientes = () => {
+    const pendientes = pedidos.filter(pedido => pedido.status === 'pending')
+    return pendientes;
+  };
+
+  const pedidoTerminado = (id) => {
+    // setPedidoListo({
+    //   status: "delivered",
+    //   dateProcessed: new Date()
+    // })
+
+    axios({
+      method: 'PATCH',
+      url: `${urlOrdenes}/${id}`,
+      data: {
+        status: "delivered",
+        dateProcessed: new Date()
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((respuesta) => {
+        console.log(respuesta.data)
+    }).catch(error => {
+        console.log(error)
+    })
+  };
 
   return (
     <div className='pedidosEnCocina-contenedor'>
@@ -33,11 +62,10 @@ function PedidosEnCocina() {
       </section>
       <section className='pedidosPendientesCocina-contenedor'>
 
-        {pedidos.map((pedido) => {
+        {pedidosPendientes().map((pedido) => {
           return (
 
             <div key={pedido.id} className='pedidoPendienteCocina'>
-
               <><section><h3>PEDIDO #{pedido.id}</h3></section>
                 <section className='productosPendientes'>
                   <table>
@@ -49,17 +77,17 @@ function PedidosEnCocina() {
                             <td><b>1</b></td>
                             <td>{item.product.name}</td>
                           </tr>
-                         );
+                        );
                       })}
                     </tbody>
                   </table>
-                </section><button
+                </section>
+                <button
                   className="boton bg-naranja t-xs"
+                  onClick={() => pedidoTerminado(pedido.id)}
                 >Pedido Completado
                 </button></>
-
             </div>
-
           );
         })}
       </section>

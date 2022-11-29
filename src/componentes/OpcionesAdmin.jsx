@@ -1,7 +1,7 @@
 import bugerQueenLogo from '../imagenes/burger-LogoBlanco.png'
 import '../hojas-de-estilo/Opciones.css'
 import { useNavigate } from "react-router";
-import { adminProductos } from "../Rutas/rutas";
+import { adminProductos, adminUsuarios } from "../Rutas/rutas";
 
 function OpcionesAdmin() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function OpcionesAdmin() {
           <section className='bloque-opciones' onClick={() => navigate(adminProductos)}>
             <h3>productos</h3>
           </section>
-          <section className='bloque-opciones'>
+          <section className='bloque-opciones'onClick={() => navigate(adminUsuarios)}>
             <h3>usuarios</h3>
           </section>
         </div>

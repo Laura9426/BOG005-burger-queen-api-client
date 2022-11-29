@@ -9,10 +9,8 @@ import ModalNuevoProductoAdmin from './ModalNuevoProductoAdmin';
 import useModal from '../hooks/useModal';
 import ModalEditarProductoAdmin from './ModalEditarProductoAdmin';
 
-const urlProductos = 'http://localhost:8080/products';
-
 function AdminProductos() {
-
+  const url = 'http://localhost:8080/products';
   const navigate = useNavigate();
 
   const [productos, setProductos] = useState([]);
@@ -24,7 +22,7 @@ function AdminProductos() {
 
 
   useEffect(() => {
-    axios.get(urlProductos, {
+    axios.get(url, {
       headers: {
         'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('token')}`
@@ -48,15 +46,14 @@ function AdminProductos() {
 
   const eliminarProducto = (id, name) => {
 
-    const confirmar = window.confirm(`¿Estas seguro que deseas eliminar el producto ${name}?`);
+    const confirmar = window.confirm(`¿Estas seguro que desea eliminar el producto ${name}?`);
     if (confirmar) {
-      axios.delete(`${urlProductos}/${id}`, {
+      axios.delete(`${url}/${id}`, {
         headers: {
           'content-type': 'application/json',
           authorization: `Bearer ${localStorage.getItem('token')}`
         }
-      }).then(respuesta => {
-        console.log(respuesta.data)
+      }).then(() => {
         setActualizarLista(!actualizarLista);
       }).catch(error => {
         console.log(error);
@@ -76,18 +73,18 @@ function AdminProductos() {
         <ModalNuevoProductoAdmin
           isOpen={isOpenModalNuevo}
           closeModal={closeModalNuevo}
-          setActualizarLista = {setActualizarLista}
-          actualizarLista = {actualizarLista}
+          setActualizarLista={setActualizarLista}
+          actualizarLista={actualizarLista}
         />
       </section>
       <section>
         <ModalEditarProductoAdmin
           isOpen={isOpenModalEditar}
           closeModal={closeModalEditar}
-          dataModal = {dataModal}
-          setDataModal = {setDataModal}
-          setActualizarLista = {setActualizarLista}
-          actualizarLista = {actualizarLista}
+          dataModal={dataModal}
+          setDataModal={setDataModal}
+          setActualizarLista={setActualizarLista}
+          actualizarLista={actualizarLista}
 
         />
       </section>
