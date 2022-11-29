@@ -91,6 +91,17 @@
     background-color: #FCA923;
     color: black;
   }
+
+  .boton.bg-negro {
+    background-color: black;
+    color: white;
+  }
+  .boton.bg-blanco {
+    background-color: white;
+    color: black;
+  }
+
+  
   .boton.t-xs {
     width: 130px;
   }

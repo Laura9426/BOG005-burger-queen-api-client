@@ -1,9 +1,9 @@
 import bugerQueenLogo from '../imagenes/burger-LogoBlanco.png'
 import '../hojas-de-estilo/Opciones.css'
 import { useNavigate } from "react-router";
-import { menuAlmuerzo } from "../Rutas/rutas";
+import { adminProductos } from "../Rutas/rutas";
 
-function Opciones() {
+function OpcionesAdmin() {
   const navigate = useNavigate();
 
   return (
@@ -17,11 +17,11 @@ function Opciones() {
           />
         </figure>
         <div className='bloque-opciones-contenedor'>
-          <section className='bloque-opciones' onClick={() => navigate(menuAlmuerzo)}>
-            <h3>nuevo <br/>pedido</h3>
+          <section className='bloque-opciones' onClick={() => navigate(adminProductos)}>
+            <h3>productos</h3>
           </section>
           <section className='bloque-opciones'>
-            <h3>Pedidos en proceso</h3>
+            <h3>usuarios</h3>
           </section>
         </div>
       </div>
@@ -29,4 +29,4 @@ function Opciones() {
   );
 }
 
-export default Opciones;
+export default OpcionesAdmin;

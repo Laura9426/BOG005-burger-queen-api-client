@@ -6,7 +6,6 @@ function PedidosEnCocina() {
   const urlOrdenes = 'http://localhost:8080/orders';
 
   const [pedidos, setPedidos] = useState([]);
-  // const [productos, setProductos] = useState([]);
 
   useEffect(() => {
     axios.get(urlOrdenes, {
@@ -22,12 +21,7 @@ function PedidosEnCocina() {
     })
   }, []);
 
-  // const productosArray = () => {
-  //   const produtosObjeto = pedidos.map(pedidos => pedidos.products);
-  //   return produtosObjeto
-  // }
 
-  // console.log(productosArray)
   return (
     <div className='pedidosEnCocina-contenedor'>
       <section className='tituloYlogo'>
@@ -38,24 +32,36 @@ function PedidosEnCocina() {
         <h3>PEDIDOS PENDIENTES</h3>
       </section>
       <section className='pedidosPendientesCocina-contenedor'>
-        <div className='pedidoPendienteCocina'>
-          <section><h3>PEDIDO #1</h3></section>
-          <section className='productosPendientes'>
-            <table>
-              <tbody>
-                  <tr>
-                    <td><b>1</b></td>
-                    <td>hamburguesa</td>
-                  </tr>
-              </tbody>
-            </table>
-          </section>
-          <button
-            className="boton bg-naranja t-xs"
-          >Pedido Completado
-          </button>
 
-        </div>
+        {pedidos.map((pedido) => {
+          return (
+
+            <div key={pedido.id} className='pedidoPendienteCocina'>
+
+              <><section><h3>PEDIDO #{pedido.id}</h3></section>
+                <section className='productosPendientes'>
+                  <table>
+                    <tbody>
+
+                      {pedido.products.map((item, index) => {
+                        return (
+                          <tr key={index}>
+                            <td><b>1</b></td>
+                            <td>{item.product.name}</td>
+                          </tr>
+                         );
+                      })}
+                    </tbody>
+                  </table>
+                </section><button
+                  className="boton bg-naranja t-xs"
+                >Pedido Completado
+                </button></>
+
+            </div>
+
+          );
+        })}
       </section>
     </div>
   );

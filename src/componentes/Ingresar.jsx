@@ -1,9 +1,9 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import '../hojas-de-estilo/Ingresar.css'
 import bugerQueenLogo from '../imagenes/burger-LogoBlanco.png'
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { opciones, menuAlmuerzo, menuDesayuno, cocina } from "../Rutas/rutas";
+import { opcionesMenu, opcionesAdmin, cocina } from "../Rutas/rutas";
 
 
 const url = 'http://localhost:8080/login'
@@ -35,10 +35,10 @@ function Ingresar() {
       const role = respuesta.data.user.role;
       switch (role) {
         case 'admin':
-          navigate(menuAlmuerzo);
+          navigate(opcionesAdmin);
           break;
         case 'mesero':
-          navigate(opciones);
+          navigate(opcionesMenu);
           break;
         case 'cocinero':
           navigate(cocina);

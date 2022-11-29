@@ -2,21 +2,24 @@ import React, { useEffect, useState } from "react";
 import '../hojas-de-estilo/MenuAlmuerzo.css'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import axios from "axios";
+import { menuDesayuno, opcionesMenu } from "../Rutas/rutas";
+import { useNavigate } from "react-router";
 
 const urlProductos = 'http://localhost:8080/products';
 const urlOrdenes = 'http://localhost:8080/orders';
 
 function MenuAlmuerzo() {
-  let contador = 0;
+  
+  const navigate = useNavigate();
+
   const [productos, setProductos] = useState([]);
   const [productosAgregados, setProductosAgregados] = useState([]);
   const [nombreCliente, setNombreCliente] = useState('');
   const [mensajeError, setMensajeError] = useState('');
-  const [mensajeExitoso, setMensajeExitoso] = useState('diana es una burja');
+  const [mensajeExitoso, setMensajeExitoso] = useState('');
 
   useEffect(() => {
     axios.get(urlProductos, {
-      name: 'name',
       headers: {
         'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('token')}`
@@ -27,7 +30,7 @@ function MenuAlmuerzo() {
       console.log(error);
     })
   }, []);
-
+  
   const productosAlmuerzo = () => {
     const menuAlmuerzo = productos.filter(producto => producto.type === 'Almuerzo')
     return menuAlmuerzo;
@@ -42,21 +45,16 @@ function MenuAlmuerzo() {
     setProductosAgregados([...producto, ...productosAgregados])
   };
 
-  const eliminarProducto = (pid) => {
-    const pedidoActualizado = productosAgregados.filter(dato => dato.id !== pid)
+  const eliminarProducto = (index) => {
+    const pedidoActualizado = [...productosAgregados.slice(0, index), ...productosAgregados.slice(index + 1)]
     setProductosAgregados(pedidoActualizado);
-    // let eleminado = falso;
-    // for (let i=0; i<productosAgregados.length; i++){
-    //   if 
-    //   const pedidoActualizado = 
-    // }
   };
 
   const totalPedido = () => {
     let total = 0;
     const precios = productosAgregados.map(precio => precio.price)
     for (let i = 0; i < precios.length; i++) {
-      total = total + precios[i];
+      total = total + Number.parseInt(precios[i]);
     }
     return total;
   }
@@ -88,14 +86,13 @@ function MenuAlmuerzo() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
-        }).then((respuesta) => {
+        }).then(() => {
           setMensajeExitoso('Pedido exitoso')
           document.getElementById('mensaje-exitoso').style.display = "block";
           setTimeout(() => {
             document.getElementById('mensaje-exitoso').style.display = "none";
           }, 3000);
-          setProductosAgregados([]);
-          setNombreCliente('');
+          limpiarPedido();
         }).catch(error => {
           console.log(error);
         })
@@ -116,23 +113,33 @@ function MenuAlmuerzo() {
     };
   };
 
+  const limpiarPedido = () => {
+    setProductosAgregados([]);
+    setNombreCliente('');
+  };
+
   return (
     <div className='menuAlmuerzo-contenedor'>
       <div className='escogerPedido-contenedor'>
         <section className='barra-menu-opciones'>
-          <h3 className='titulo-desayuno'>DESAYUNO</h3>
+          <h3 className='titulo-desayuno' onClick={() => navigate(menuDesayuno)}>DESAYUNO</h3>
           <h3 className='titulo-almuerzo'>ALMUERZO - CENA</h3>
         </section>
         <section className='productos-contenedor'>
-          {productosAlmuerzo().map(producto => (
-            <div key={producto.id} id={producto.id} className='producto'
+          {productosAlmuerzo().map((producto, index) => (
+            <div key={index} id={producto.id} className='producto'
               onClick={() => agregarPedido(producto.id)}
             ><p>{producto.name}</p></div>
           ))}
         </section>
         <section className='botones-productos'>
-          <button className='boton bg-naranja t-l'>Volver al menu</button>
-          <button className='boton bg-naranja t-l'>Limpiar Pedido</button>
+          <button
+            className='boton bg-naranja t-l'
+            onClick={() => navigate(opcionesMenu)} >Volver al menu
+          </button>
+          <button
+            className='boton bg-naranja t-l'
+            onClick={() => limpiarPedido()}>Limpiar Pedido</button>
         </section>
       </div>
 
@@ -161,11 +168,11 @@ function MenuAlmuerzo() {
         <section className='productos-escogidos-contenedor'>
           <table>
             <tbody>
-              {productosAgregados.map(item => (
-                <tr key={contador++}>
+              {productosAgregados.map((item, index) => (
+                <tr key={index}>
                   <td ><span>{item.name}</span></td>
                   <td className='precio-tabla'>{item.price}</td>
-                  <td className='eliminarProducto-icono' onClick={() => eliminarProducto(item.id)}><AiFillCloseCircle /></td>
+                  <td className='eliminarProducto-icono' onClick={() => eliminarProducto(index)}><AiFillCloseCircle /></td>
                 </tr>
               ))}
             </tbody>
