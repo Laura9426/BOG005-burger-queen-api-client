@@ -34,6 +34,12 @@ function AdminProductos() {
     })
   }, [actualizarLista]);
 
+  const closeModal = () => {
+    closeModalEditar()
+    setActualizarLista(!actualizarLista)
+    setDataModal(null)
+  };
+
   const productosAlmuerzo = () => {
     const menuAlmuerzo = productos.filter(producto => producto.type === 'Almuerzo')
     return menuAlmuerzo;
@@ -80,12 +86,8 @@ function AdminProductos() {
       <section>
         <ModalEditarProductoAdmin
           isOpen={isOpenModalEditar}
-          closeModal={closeModalEditar}
+          closeModal={closeModal}
           dataModal={dataModal}
-          setDataModal={setDataModal}
-          setActualizarLista={setActualizarLista}
-          actualizarLista={actualizarLista}
-
         />
       </section>
 

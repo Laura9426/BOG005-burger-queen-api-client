@@ -5,14 +5,13 @@ import '../hojas-de-estilo/ModalEditarProductoAdmin.css'
 
 const url = 'http://localhost:8080/products';
 
-function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal, actualizarLista, setActualizarLista }) {
+function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal }) {
 
   const [mensajeExitoso, setMensajeExitoso] = useState('');
-  // const [manejoDataa, setManejodataa] = useState({
-  //   name: '', 
-  //   price: ''
-  // });
+  const [productoEditar, setProductoEditar] = useState(dataModal);
 
+  console.log(dataModal)
+  
   const detenerClick = (e) => {
     e.stopPropagation();
   };
@@ -21,8 +20,8 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal,
     e.preventDefault();
     axios({
       method: 'PUT',
-      url: `${url}/${dataModal.id}`,
-      data: dataModal,
+      url: `${url}/${productoEditar.id}`,
+      data: productoEditar,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -34,15 +33,14 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal,
         document.getElementById('mensajeEditar-exitoso').style.display = "none";
         closeModal();
       }, 3000);
-      setActualizarLista(!actualizarLista);
     }).catch(error => {
       console.log(error);
     })
   };
 
   const manejoData = ({ target }) => {
-    setDataModal({
-      ...dataModal,
+    setProductoEditar({
+      ...productoEditar,
       [target.name]: target.value
     })
   };
@@ -55,16 +53,16 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal, setDataModal,
         <SlClose className="iconoCerrar" onClick={closeModal} />
         <h3>EDITAR PRODUCTO</h3>
         <form onSubmit={editarProducto}>
-          <input type="text" placeholder="NOMBRE" value={dataModal.name} name="name" onChange={manejoData} required />
-          <input type="number" placeholder="PRECIO" value={dataModal.price} name="price" onChange={manejoData} required />
+          <input type="text" placeholder="NOMBRE" value={productoEditar.name} name="name" onChange={manejoData} required />
+          <input type="number" placeholder="PRECIO" value={productoEditar.price} name="price" onChange={manejoData} required />
 
           <select name="type" onChange={manejoData} required>
-            <option value={dataModal.type}>{dataModal.type}</option>
+            <option value={productoEditar.type}>{productoEditar.type}</option>
             <option value="Desayuno">Desayuno</option>
             <option value="Almuerzo">Almuerzo</option>
           </select>
 
-          <input type="datetime-local" placeholder="FECHA" value={dataModal.dateEntry} name="dateEntry" onChange={manejoData} required />
+          <input type="datetime-local" placeholder="FECHA" value={productoEditar.dateEntry} name="dateEntry" onChange={manejoData} required />
 
           <button className="boton bg-naranja t-xs">
             GUARDAR
