@@ -1,4 +1,5 @@
 import '../hojas-de-estilo/PedidosAEntregar.css'
+import { AiOutlineHome } from 'react-icons/ai'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -8,7 +9,9 @@ function PedidosAEntregar() {
 
   const urlOrdenes = 'http://localhost:8080/orders';
   const navigate = useNavigate();
+  
   const [pedidos, setPedidos] = useState([]);
+  const [actualizarLista, setActualizarLista] = useState(false);
 
   useEffect(() => {
     axios.get(urlOrdenes, {
@@ -17,17 +20,37 @@ function PedidosAEntregar() {
         authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then(respuesta => {
-      console.log(respuesta.data)
       setPedidos(respuesta.data)
     }).catch(error => {
       console.log(error);
     })
-  }, []);
+  }, [actualizarLista]);
 
   const pedidosListos = () => {
     const pendientes = pedidos.filter(pedido => pedido.status === 'delivered')
     return pendientes;
   };
+
+  const pedidoEntregado = (id) => {
+
+    axios({
+      method: 'PATCH',
+      url: `${urlOrdenes}/${id}`,
+      data: {
+        status: "ok",
+        dateProcessed: new Date()
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(() => {
+      setActualizarLista(!actualizarLista);
+    }).catch(error => {
+      console.log(error)
+    })
+  };
+
 
   return (
     <div className='pedidosEnCocina-contenedor'>
@@ -43,7 +66,7 @@ function PedidosAEntregar() {
         {pedidosListos().map(pedido => {
           return (
             <div key={pedido.id} className='pedidoPendienteCocina'>
-              <section><h3>Pedido {pedido.id} de {pedido.client}</h3></section>
+              <section><h3>Pedido #{pedido.id}</h3></section>
               <section className='productosPendientes'>
                 <table>
                   <tbody>
@@ -59,17 +82,23 @@ function PedidosAEntregar() {
                   </tbody>
                 </table>
               </section>
+              <button
+                className="boton bg-naranja t-xs"
+                onClick={() => pedidoEntregado(pedido.id)}
+              >Pedido Completado
+              </button>
             </div>
           );
         })}
-      </section>
+      </section >
       <section className='boton-mesero'>
-      <button
-        className='boton bg-naranja t-l'
-        onClick={() => navigate(opcionesMenu)} >Volver al menu
-      </button>
+      <AiOutlineHome className='icono-volver' onClick={() => navigate(opcionesMenu)} />
+        {/* <button
+          className='volver'
+          onClick={() => navigate(opcionesMenu)} >Volver al menu
+        </button> */}
       </section>
-    </div>
+    </div >
   )
 }
 

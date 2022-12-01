@@ -6,7 +6,7 @@ function PedidosEnCocina() {
   const urlOrdenes = 'http://localhost:8080/orders';
 
   const [pedidos, setPedidos] = useState([]);
-  const [pedidoListo, setPedidoListo] = useState({});
+  const [actualizarLista, setActualizarLista] = useState(false);
 
   useEffect(() => {
     axios.get(urlOrdenes, {
@@ -15,12 +15,11 @@ function PedidosEnCocina() {
         authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then(respuesta => {
-      console.log(respuesta.data)
       setPedidos(respuesta.data)
     }).catch(error => {
       console.log(error);
     })
-  }, []);
+  }, [actualizarLista]);
 
   const pedidosPendientes = () => {
     const pendientes = pedidos.filter(pedido => pedido.status === 'pending')
@@ -28,10 +27,6 @@ function PedidosEnCocina() {
   };
 
   const pedidoTerminado = (id) => {
-    // setPedidoListo({
-    //   status: "delivered",
-    //   dateProcessed: new Date()
-    // })
 
     axios({
       method: 'PATCH',
@@ -44,10 +39,10 @@ function PedidosEnCocina() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
-    }).then((respuesta) => {
-        console.log(respuesta.data)
+    }).then(() => {
+      setActualizarLista(!actualizarLista);
     }).catch(error => {
-        console.log(error)
+      console.log(error)
     })
   };
 

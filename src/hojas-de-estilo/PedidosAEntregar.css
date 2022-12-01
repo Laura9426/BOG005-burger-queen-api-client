@@ -1,7 +1,10 @@
 
 .boton-mesero {
     position:absolute;
-    bottom: 10px;
-    right: 50%;
-    margin-right: -100px;
+    top: 15px;
+    right: 15px;
+}
+
+.icono-volver {
+    font-size: 40px;
 }
