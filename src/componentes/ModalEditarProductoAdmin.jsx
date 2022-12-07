@@ -10,7 +10,8 @@ function ModalEditarProductoAdmin({ isOpen, closeModal, dataModal }) {
   const [mensajeExitoso, setMensajeExitoso] = useState('');
   const [productoEditar, setProductoEditar] = useState(dataModal);
 
-  console.log(dataModal)
+  console.log('producto', productoEditar)
+  console.log('modal', dataModal)
   
   const detenerClick = (e) => {
     e.stopPropagation();
